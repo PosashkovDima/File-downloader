@@ -13,8 +13,7 @@
         android:id="@+id/btnProgressBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true" 
         android:layout_marginBottom="50dp"
         android:text="@string/download" />
 
@@ -22,10 +21,8 @@
         android:id="@+id/textViewStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/my_image"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="54dp"
+        android:layout_alignParentLeft="true" 
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="60dp"
         android:text="@string/statusIdle" />
-
 </RelativeLayout>
