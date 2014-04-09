@@ -4,5 +4,8 @@
     <string name="app_name">File downloader</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="url_img">http://www.dezinfo.net/images4/image/09.2012/not_impressed_cat/not_impressed_cat_01.jpg</string>
+    <string name="download">Download</string>
+    <string name="statusIdle">Status: Idle</string>
 
 </resources>
