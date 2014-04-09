@@ -23,6 +23,8 @@ public class MainActivity extends Activity {
 	private ImageView imageDownloaded;
 	private TextView textViewStatus;
 
+	private static final String DOWNLOADED_IMAGE_NAME = "downloadedImage.jpg";
+
 	private static final String IS_DOWNLOADING = "is_downloading";
 	private boolean isDownloading = false;
 	private static final String IS_DOWNLOADED = "is_downloaded";
@@ -36,7 +38,7 @@ public class MainActivity extends Activity {
 		buttonAction = (Button) findViewById(R.id.btnProgressBar);
 		textViewStatus = (TextView) findViewById(R.id.textViewStatus);
 		imageDownloaded = (ImageView) findViewById(R.id.imageDownloaded);
-		
+
 		if (savedInstanceState == null) {
 			setOnClickeListnerDownload();
 		}
@@ -80,7 +82,8 @@ public class MainActivity extends Activity {
 		buttonAction.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				String imagePath = getFilesDir().toString() + "/b.jpg";
+				String imagePath = getFilesDir().toString()
+						+"/"+ DOWNLOADED_IMAGE_NAME;
 				imageDownloaded.setImageDrawable(Drawable
 						.createFromPath(imagePath));
 				buttonAction.setVisibility(4);
@@ -128,8 +131,8 @@ public class MainActivity extends Activity {
 
 				InputStream input = new BufferedInputStream(url.openStream(),
 						8192);
-				FileOutputStream output = openFileOutput("b.jpg",
-						Context.MODE_APPEND);
+				FileOutputStream output = openFileOutput(DOWNLOADED_IMAGE_NAME,
+						Context.MODE_PRIVATE);
 
 				byte data[] = new byte[1024];
 
