@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
@@ -30,12 +31,13 @@ public class MainActivity extends Activity {
 	private static final String IS_DOWNLOADED = "is_downloaded";
 	private boolean isDownloaded = false;
 
+    private ProgressBar progressTimer;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		buttonAction = (Button) findViewById(R.id.btnProgressBar);
+		buttonAction = (Button) findViewById(R.id.buttonAction);
 		textViewStatus = (TextView) findViewById(R.id.textViewStatus);
 		imageDownloaded = (ImageView) findViewById(R.id.imageDownloaded);
 

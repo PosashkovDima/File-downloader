@@ -10,7 +10,7 @@
  
 
     <Button
-        android:id="@+id/btnProgressBar"
+        android:id="@+id/buttonAction"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true" 
@@ -25,4 +25,14 @@
         android:layout_marginLeft="40dp"
         android:layout_marginTop="60dp"
         android:text="@string/statusIdle" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textViewStatus"
+        android:layout_below="@+id/textViewStatus"
+        android:layout_marginTop="79dp" />
+
 </RelativeLayout>
