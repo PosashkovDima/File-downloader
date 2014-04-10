@@ -31,8 +31,8 @@ public class MainActivity extends Activity {
 	private static final String IS_DOWNLOADED = "is_downloaded";
 	private boolean isDownloaded = false;
 
-    private ProgressBar progressBarTimer;
-    
+	private ProgressBar progressBarTimer;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -44,6 +44,7 @@ public class MainActivity extends Activity {
 		progressBarTimer = (ProgressBar) findViewById(R.id.progressBar);
 
 		if (savedInstanceState == null) {
+			setStatusIdle();
 			setOnClickeListnerDownload();
 		}
 	}
@@ -53,6 +54,7 @@ public class MainActivity extends Activity {
 		textViewStatus.setText("Status: Downloading");
 		isDownloading = true;
 		isDownloaded = false;
+		progressBarTimer.setVisibility(1);
 		buttonAction.setEnabled(false);
 	}
 
@@ -70,6 +72,7 @@ public class MainActivity extends Activity {
 		isDownloading = false;
 		isDownloaded = false;
 		buttonAction.setEnabled(true);
+		progressBarTimer.setVisibility(4);
 	}
 
 	private void setOnClickeListnerDownload() {
@@ -86,12 +89,13 @@ public class MainActivity extends Activity {
 		buttonAction.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				String imagePath = getFilesDir().toString()
-						+"/"+ DOWNLOADED_IMAGE_NAME;
+				String imagePath = getFilesDir().toString() + "/"
+						+ DOWNLOADED_IMAGE_NAME;
 				imageDownloaded.setImageDrawable(Drawable
 						.createFromPath(imagePath));
 				buttonAction.setVisibility(4);
 				textViewStatus.setVisibility(4);
+				progressBarTimer.setVisibility(4);
 			}
 		});
 	}
