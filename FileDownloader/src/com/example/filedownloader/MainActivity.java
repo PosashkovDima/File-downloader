@@ -31,7 +31,8 @@ public class MainActivity extends Activity {
 	private static final String IS_DOWNLOADED = "is_downloaded";
 	private boolean isDownloaded = false;
 
-    private ProgressBar progressTimer;
+    private ProgressBar progressBarTimer;
+    
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -40,6 +41,7 @@ public class MainActivity extends Activity {
 		buttonAction = (Button) findViewById(R.id.buttonAction);
 		textViewStatus = (TextView) findViewById(R.id.textViewStatus);
 		imageDownloaded = (ImageView) findViewById(R.id.imageDownloaded);
+		progressBarTimer = (ProgressBar) findViewById(R.id.progressBar);
 
 		if (savedInstanceState == null) {
 			setOnClickeListnerDownload();
@@ -157,7 +159,7 @@ public class MainActivity extends Activity {
 		}
 
 		protected void onProgressUpdate(String... progress) {
-			// setProgress(Integer.parseInt(progress[0]));
+			progressBarTimer.setProgress(Integer.parseInt(progress[0]));
 		}
 
 		@Override
