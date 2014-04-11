@@ -9,7 +9,6 @@ import java.net.URLConnection;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -93,22 +92,19 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				String imagePath = getFilesDir().toString() + "/"
 						+ DOWNLOADED_IMAGE_NAME;
+				// 0
 				// imageDownloaded.setImageDrawable(Drawable
 				// .createFromPath(imagePath));
-
+				// 1
 				Intent intent = new Intent();
 				intent.setAction(Intent.ACTION_VIEW);
-				 intent.setDataAndType(Uri.parse(imagePath), "image/*");
-				// intent.putExtra("BitmapImage", DOWNLOADED_IMAGE_NAME);
-
-//				intent.setType("image/*");
-//				intent.setAction(Intent.ACTION_GET_CONTENT);
-//				startActivityForResult(
-//						Intent.createChooser(intent, imagePath), 1);
-				 startActivity(intent);
-
-//				 startActivity(new Intent(Intent.ACTION_VIEW, Uri
-//				 .parse(imagePath)));
+				intent.setDataAndType(Uri.parse(imagePath), "image/*");
+				startActivity(intent);
+				// 2
+				// intent.setType("image/*");
+				// intent.setAction(Intent.ACTION_GET_CONTENT);
+				// startActivityForResult(
+				// Intent.createChooser(intent, imagePath), 1);
 
 				buttonAction.setVisibility(4);
 				textViewStatus.setVisibility(4);
