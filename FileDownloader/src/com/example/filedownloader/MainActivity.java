@@ -9,7 +9,6 @@ import java.net.URLConnection;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -50,32 +49,6 @@ public class MainActivity extends Activity {
 		}
 	}
 
-	private void setStatusDownloading() {
-		buttonAction.setText("Downloading");
-		textViewStatus.setText("Status: Downloading");
-		isDownloading = true;
-		isDownloaded = false;
-		progressBarTimer.setVisibility(1);
-		buttonAction.setEnabled(false);
-	}
-
-	private void setStatusDownloaded() {
-		buttonAction.setText("Open");
-		textViewStatus.setText("Status: Downloaded");
-		isDownloading = false;
-		isDownloaded = true;
-		buttonAction.setEnabled(true);
-	}
-
-	private void setStatusIdle() {
-		buttonAction.setText("Download");
-		textViewStatus.setText("Status: Idle");
-		isDownloading = false;
-		isDownloaded = false;
-		buttonAction.setEnabled(true);
-		progressBarTimer.setVisibility(4);
-	}
-
 	private void setOnClickeListnerDownload() {
 		buttonAction.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -97,14 +70,14 @@ public class MainActivity extends Activity {
 				// .createFromPath(imagePath));
 				// 1
 				Intent intent = new Intent();
-				intent.setAction(Intent.ACTION_VIEW);
-				intent.setDataAndType(Uri.parse(imagePath), "image/*");
-				startActivity(intent);
+				// intent.setAction(Intent.ACTION_VIEW);
+				// intent.setDataAndType(Uri.parse(imagePath), "image/*");
+				// startActivity(intent);
 				// 2
-				// intent.setType("image/*");
-				// intent.setAction(Intent.ACTION_GET_CONTENT);
-				// startActivityForResult(
-				// Intent.createChooser(intent, imagePath), 1);
+				intent.setType("image/*");
+				intent.setAction(Intent.ACTION_GET_CONTENT);
+				startActivityForResult(Intent.createChooser(intent, imagePath),
+						1);
 
 				buttonAction.setVisibility(4);
 				textViewStatus.setVisibility(4);
@@ -143,18 +116,17 @@ public class MainActivity extends Activity {
 		}
 
 		@Override
-		protected String doInBackground(String... f_url) {
+		protected String doInBackground(String... fileUrl) {
 			int count;
 			try {
-				URL url = new URL(f_url[0]);
+				URL url = new URL(fileUrl[0]);
 				URLConnection conection = url.openConnection();
 				conection.connect();
 				int lenghtOfFile = conection.getContentLength();
 
-				InputStream input = new BufferedInputStream(url.openStream(),
-						8192);
+				InputStream input = new BufferedInputStream(url.openStream(), 1);
 				FileOutputStream output = openFileOutput(DOWNLOADED_IMAGE_NAME,
-						Context.MODE_PRIVATE);
+						Context.MODE_APPEND);
 
 				byte data[] = new byte[1024];
 
@@ -182,10 +154,37 @@ public class MainActivity extends Activity {
 		}
 
 		@Override
-		protected void onPostExecute(String file_url) {
+		protected void onPostExecute(String fileUrl) {
 			setStatusDownloaded();
 			setOnClickeListnerOpen();
 		}
 
 	}
+
+	private void setStatusDownloading() {
+		buttonAction.setText("Downloading");
+		textViewStatus.setText("Status: Downloading");
+		isDownloading = true;
+		isDownloaded = false;
+		progressBarTimer.setVisibility(1);
+		buttonAction.setEnabled(false);
+	}
+
+	private void setStatusDownloaded() {
+		buttonAction.setText("Open");
+		textViewStatus.setText("Status: Downloaded");
+		isDownloading = false;
+		isDownloaded = true;
+		buttonAction.setEnabled(true);
+	}
+
+	private void setStatusIdle() {
+		buttonAction.setText("Download");
+		textViewStatus.setText("Status: Idle");
+		isDownloading = false;
+		isDownloaded = false;
+		buttonAction.setEnabled(true);
+		progressBarTimer.setVisibility(4);
+	}
+
 }
