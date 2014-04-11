@@ -98,11 +98,17 @@ public class MainActivity extends Activity {
 
 				Intent intent = new Intent();
 				intent.setAction(Intent.ACTION_VIEW);
-				intent.setDataAndType(Uri.parse(imagePath), "image/*");
-				startActivity(intent);
+				 intent.setDataAndType(Uri.parse(imagePath), "image/*");
+				// intent.putExtra("BitmapImage", DOWNLOADED_IMAGE_NAME);
 
-				// startActivity(new Intent(Intent.ACTION_VIEW, Uri
-				// .parse(imagePath)));
+//				intent.setType("image/*");
+//				intent.setAction(Intent.ACTION_GET_CONTENT);
+//				startActivityForResult(
+//						Intent.createChooser(intent, imagePath), 1);
+				 startActivity(intent);
+
+//				 startActivity(new Intent(Intent.ACTION_VIEW, Uri
+//				 .parse(imagePath)));
 
 				buttonAction.setVisibility(4);
 				textViewStatus.setVisibility(4);
