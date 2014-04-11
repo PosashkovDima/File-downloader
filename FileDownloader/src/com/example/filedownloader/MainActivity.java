@@ -1,19 +1,21 @@
 package com.example.filedownloader;
 
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,7 +23,6 @@ import android.widget.Toast;
 public class MainActivity extends Activity {
 
 	private Button buttonAction;
-	private ImageView imageDownloaded;
 	private TextView textViewStatus;
 
 	private static final String DOWNLOADED_IMAGE_NAME = "downloadedImage.jpg";
@@ -40,7 +41,6 @@ public class MainActivity extends Activity {
 
 		buttonAction = (Button) findViewById(R.id.buttonAction);
 		textViewStatus = (TextView) findViewById(R.id.textViewStatus);
-		imageDownloaded = (ImageView) findViewById(R.id.imageDownloaded);
 		progressBarTimer = (ProgressBar) findViewById(R.id.progressBar);
 
 		if (savedInstanceState == null) {
@@ -63,26 +63,18 @@ public class MainActivity extends Activity {
 		buttonAction.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				String imagePath = getFilesDir().toString() + "/"
-						+ DOWNLOADED_IMAGE_NAME;
-				// 0
-				// imageDownloaded.setImageDrawable(Drawable
-				// .createFromPath(imagePath));
-				// 1
+				String imagePath = Environment.getExternalStorageDirectory()
+						+ "/download/" + DOWNLOADED_IMAGE_NAME;
+				File file = new File(imagePath);
+
 				Intent intent = new Intent();
-				// intent.setAction(Intent.ACTION_VIEW);
-				// intent.setDataAndType(Uri.parse(imagePath), "image/*");
-				// startActivity(intent);
-				// 2
-				intent.setType("image/*");
-				intent.setAction(Intent.ACTION_GET_CONTENT);
-				startActivityForResult(Intent.createChooser(intent, imagePath),
-						1);
+				intent.setAction(Intent.ACTION_VIEW);
+				intent.setDataAndType(Uri.fromFile(file), "image/*");
+				startActivity(intent);
 
 				buttonAction.setVisibility(4);
 				textViewStatus.setVisibility(4);
 				progressBarTimer.setVisibility(4);
-
 			}
 		});
 	}
@@ -124,9 +116,11 @@ public class MainActivity extends Activity {
 				conection.connect();
 				int lenghtOfFile = conection.getContentLength();
 
-				InputStream input = new BufferedInputStream(url.openStream(), 1);
-				FileOutputStream output = openFileOutput(DOWNLOADED_IMAGE_NAME,
-						Context.MODE_APPEND);
+				InputStream input = new BufferedInputStream(url.openStream(),
+						8192);
+				OutputStream output = new FileOutputStream(
+						Environment.getExternalStorageDirectory()
+								+ "/download/" + DOWNLOADED_IMAGE_NAME);
 
 				byte data[] = new byte[1024];
 
