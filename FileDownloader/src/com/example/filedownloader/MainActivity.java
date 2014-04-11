@@ -108,7 +108,7 @@ public class MainActivity extends Activity {
 		outState.putBoolean(IS_DOWNLOADED, isDownloaded);
 	}
 
-	class DownloadFileFromURL extends AsyncTask<String, String, String> {
+	class DownloadFileFromURL extends AsyncTask<String, Integer, Integer> {
 
 		@Override
 		protected void onPreExecute() {
@@ -116,7 +116,7 @@ public class MainActivity extends Activity {
 		}
 
 		@Override
-		protected String doInBackground(String... fileUrl) {
+		protected Integer doInBackground(String... fileUrl) {
 			int count;
 			try {
 				URL url = new URL(fileUrl[0]);
@@ -134,7 +134,7 @@ public class MainActivity extends Activity {
 
 				while ((count = input.read(data)) != -1) {
 					total += count;
-					publishProgress("" + (int) ((total * 100) / lenghtOfFile));
+					publishProgress((int) ((total * 100) / lenghtOfFile));
 					output.write(data, 0, count);
 				}
 				output.flush();
@@ -149,12 +149,12 @@ public class MainActivity extends Activity {
 			return null;
 		}
 
-		protected void onProgressUpdate(String... progress) {
-			progressBarTimer.setProgress(Integer.parseInt(progress[0]));
+		protected void onProgressUpdate(Integer... progress) {
+			progressBarTimer.setProgress(progress[0]);
 		}
 
 		@Override
-		protected void onPostExecute(String fileUrl) {
+		protected void onPostExecute(Integer fileUrl) {
 			setStatusDownloaded();
 			setOnClickeListnerOpen();
 		}
