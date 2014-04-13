@@ -102,7 +102,8 @@ public class MainActivity extends Activity {
 		outState.putBoolean(IS_DOWNLOADED, isDownloaded);
 	}
 
-	class DownloadFileFromURL extends AsyncTask<String, Integer, Integer> {
+	private class DownloadFileFromURL extends
+			AsyncTask<String, Integer, Integer> {
 
 		@Override
 		protected void onPreExecute() {
