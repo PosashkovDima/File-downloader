@@ -3,8 +3,10 @@ package com.example.filedownloader;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -110,14 +112,19 @@ public class MainActivity extends Activity {
 		@Override
 		protected Integer doInBackground(String... fileUrl) {
 			int count;
+			URL url;
 			try {
-				URL url = new URL(fileUrl[0]);
+				url = new URL(fileUrl[0]);
+
 				URLConnection conection = url.openConnection();
+
 				conection.connect();
-				int lenghtOfFile = conection.getContentLength();
 
 				InputStream input = new BufferedInputStream(url.openStream(),
 						8192);
+
+				int lenghtOfFile = conection.getContentLength();
+
 				OutputStream output = new FileOutputStream(
 						Environment.getExternalStorageDirectory()
 								+ "/download/" + DOWNLOADED_IMAGE_NAME);
@@ -134,12 +141,13 @@ public class MainActivity extends Activity {
 				output.flush();
 				output.close();
 				input.close();
-
-			} catch (Exception e) {
-				Toast.makeText(getApplicationContext(), "Error.",
-						Toast.LENGTH_LONG).show();
+			} catch (MalformedURLException e) {
+				Toast.makeText(getApplicationContext(), "No such URL",
+						Toast.LENGTH_SHORT).show();
+			} catch (IOException e) {
+				Toast.makeText(getApplicationContext(), "Exception",
+						Toast.LENGTH_SHORT).show();
 			}
-
 			return null;
 		}
 
