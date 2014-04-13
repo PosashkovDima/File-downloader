@@ -26,15 +26,15 @@ public class MainActivity extends Activity {
 
 	private Button buttonAction;
 	private TextView textViewStatus;
+	private ProgressBar progressBarTimer;
 
 	private static final String DOWNLOADED_IMAGE_NAME = "downloadedImage.jpg";
-
 	private static final String IS_DOWNLOADING = "is_downloading";
 	private boolean isDownloading = false;
 	private static final String IS_DOWNLOADED = "is_downloaded";
 	private boolean isDownloaded = false;
 
-	private ProgressBar progressBarTimer;
+	private DownloadFileAsyncTask downloadFileAsyncTask;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -55,7 +55,8 @@ public class MainActivity extends Activity {
 		buttonAction.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				new DownloadFileFromURL().execute(getString(R.string.url_img));
+				downloadFileAsyncTask = new DownloadFileAsyncTask();
+				downloadFileAsyncTask.execute(getString(R.string.url_img));
 				setStatusDownloading();
 			}
 		});
@@ -82,6 +83,13 @@ public class MainActivity extends Activity {
 	}
 
 	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putBoolean(IS_DOWNLOADING, isDownloading);
+		outState.putBoolean(IS_DOWNLOADED, isDownloaded);
+	}
+
+	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
 		if (savedInstanceState.getBoolean(IS_DOWNLOADING)) {
@@ -95,14 +103,7 @@ public class MainActivity extends Activity {
 		}
 	}
 
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		outState.putBoolean(IS_DOWNLOADING, isDownloading);
-		outState.putBoolean(IS_DOWNLOADED, isDownloaded);
-	}
-
-	private class DownloadFileFromURL extends
+	private class DownloadFileAsyncTask extends
 			AsyncTask<String, Integer, Integer> {
 
 		@Override
