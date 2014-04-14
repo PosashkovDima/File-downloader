@@ -2,30 +2,60 @@ package com.example.filedownloader;
 
 import java.io.File;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class MainActivity extends FragmentActivity implements
-		TaskFragment.TaskCallbacks {
+public class MainActivity extends ActionBarActivity {
 
 	private Button buttonAction;
 	private TextView textViewStatus;
 	private ProgressBar mProgressBar;
-	private TaskFragment mTaskFragment;
 
 	private static final String DOWNLOADED_IMAGE_NAME = "downloadedImage.jpg";
 	private static final String IS_DOWNLOADING = "is_downloading";
 	private boolean isDownloading = false;
 	private static final String IS_DOWNLOADED = "is_downloaded";
 	private boolean isDownloaded = false;
+	private BroadcastReceiver receiver = new BroadcastReceiver() {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			Bundle bundle = intent.getExtras();
+			if (bundle != null) {
+
+				int resultCode = bundle.getInt(DownloadService.RESULT);
+				if (resultCode == RESULT_OK) {
+					setStatusDownloaded();
+					setOnClickeListnerOpen();
+				} else {
+					setStatusIdle();
+				}
+			}
+		}
+	};
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		registerReceiver(receiver, new IntentFilter(
+				DownloadService.NOTIFICATION));
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		unregisterReceiver(receiver);
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -35,22 +65,17 @@ public class MainActivity extends FragmentActivity implements
 		buttonAction = (Button) findViewById(R.id.buttonAction);
 		textViewStatus = (TextView) findViewById(R.id.textViewStatus);
 		mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
-		buttonAction.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				mTaskFragment.start();
-				setStatusDownloading();
-			}
-		});
+	}
 
-		FragmentManager fm = getSupportFragmentManager();
-		mTaskFragment = (TaskFragment) fm.findFragmentByTag("task");
+	public void onClickDownload(View view) {
 
-		if (mTaskFragment == null) {
-			mTaskFragment = new TaskFragment();
-			fm.beginTransaction().add(mTaskFragment, "task").commit();
-		}
+		Intent intent = new Intent(this, DownloadService.class);
 
+		intent.putExtra(DownloadService.FILENAME, DOWNLOADED_IMAGE_NAME);
+		intent.putExtra(DownloadService.URL, getString(R.string.url_img));
+		startService(intent);
+
+		setStatusDownloading();
 	}
 
 	private void setOnClickeListnerOpen() {
@@ -115,17 +140,5 @@ public class MainActivity extends FragmentActivity implements
 		isDownloaded = false;
 		buttonAction.setEnabled(true);
 		mProgressBar.setVisibility(4);
-	}
-
-	@Override
-	public void onProgressUpdate(int percent) {
-		mProgressBar.setProgress(percent * mProgressBar.getMax() / 100);
-	}
-
-	@Override
-	public void onPostExecute() {
-		mProgressBar.setProgress(mProgressBar.getMax());
-		setStatusDownloaded();
-		setOnClickeListnerOpen();
 	}
 }
