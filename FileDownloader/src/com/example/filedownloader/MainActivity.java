@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -38,6 +39,8 @@ public class MainActivity extends ActionBarActivity {
 					setStatusDownloaded();
 					setOnClickeListnerOpen();
 				} else {
+					Toast.makeText(MainActivity.this, "Error. Try again.",
+							Toast.LENGTH_SHORT).show();
 					setStatusIdle();
 				}
 			}
