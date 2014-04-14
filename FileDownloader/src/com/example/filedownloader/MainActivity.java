@@ -18,8 +18,8 @@ import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
 
-	private Button buttonAction;
-	private TextView textViewStatus;
+	private Button mButtonAction;
+	private TextView mTextViewStatus;
 	private ProgressBar mProgressBar;
 
 	private static final String DOWNLOADED_IMAGE_NAME = "downloadedImage.jpg";
@@ -27,7 +27,7 @@ public class MainActivity extends ActionBarActivity {
 	private boolean isDownloading = false;
 	private static final String IS_DOWNLOADED = "is_downloaded";
 	private boolean isDownloaded = false;
-	private BroadcastReceiver receiver = new BroadcastReceiver() {
+	private BroadcastReceiver receiverDownloading = new BroadcastReceiver() {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
@@ -47,17 +47,30 @@ public class MainActivity extends ActionBarActivity {
 		}
 	};
 
+	// private BroadcastReceiver receiverProgressBAr = new BroadcastReceiver() {
+	// @Override
+	// public void onReceive(Context context, Intent intent) {
+	// Bundle bundle = intent.getExtras();
+	// if (bundle != null) {
+	// mProgressBar.setProgress(bundle
+	// .getInt(DownloadService.TOTAL_DOWNLOADED));
+	// }
+	// }
+	// };
+
 	@Override
 	protected void onResume() {
 		super.onResume();
-		registerReceiver(receiver, new IntentFilter(
+		registerReceiver(receiverDownloading, new IntentFilter(
 				DownloadService.NOTIFICATION));
+		// registerReceiver(receiverProgressBAr, new IntentFilter(
+		// DownloadService.NOTIFICATION));
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
-		unregisterReceiver(receiver);
+		unregisterReceiver(receiverDownloading);
 	}
 
 	@Override
@@ -65,8 +78,8 @@ public class MainActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		buttonAction = (Button) findViewById(R.id.buttonAction);
-		textViewStatus = (TextView) findViewById(R.id.textViewStatus);
+		mButtonAction = (Button) findViewById(R.id.buttonAction);
+		mTextViewStatus = (TextView) findViewById(R.id.textViewStatus);
 		mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
 	}
 
@@ -74,7 +87,7 @@ public class MainActivity extends ActionBarActivity {
 
 		Intent intent = new Intent(this, DownloadService.class);
 
-		intent.putExtra(DownloadService.FILENAME, DOWNLOADED_IMAGE_NAME);
+		intent.putExtra(DownloadService.FILE_NAME, DOWNLOADED_IMAGE_NAME);
 		intent.putExtra(DownloadService.URL, getString(R.string.url_img));
 		startService(intent);
 
@@ -82,7 +95,7 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	private void setOnClickeListnerOpen() {
-		buttonAction.setOnClickListener(new View.OnClickListener() {
+		mButtonAction.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				String imagePath = Environment.getExternalStorageDirectory()
@@ -119,29 +132,29 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	private void setStatusDownloading() {
-		buttonAction.setText("Downloading");
-		textViewStatus.setText("Status: Downloading");
+		mButtonAction.setText("Downloading");
+		mTextViewStatus.setText("Status: Downloading");
 		isDownloading = true;
 		isDownloaded = false;
 		mProgressBar.setVisibility(1);
-		buttonAction.setEnabled(false);
+		mButtonAction.setEnabled(false);
 	}
 
 	private void setStatusDownloaded() {
-		buttonAction.setText("Open");
-		textViewStatus.setText("Status: Downloaded");
+		mButtonAction.setText("Open");
+		mTextViewStatus.setText("Status: Downloaded");
 		isDownloading = false;
 		isDownloaded = true;
-		buttonAction.setEnabled(true);
+		mButtonAction.setEnabled(true);
 		mProgressBar.setVisibility(4);
 	}
 
 	private void setStatusIdle() {
-		buttonAction.setText("Download");
-		textViewStatus.setText("Status: Idle");
+		mButtonAction.setText("Download");
+		mTextViewStatus.setText("Status: Idle");
 		isDownloading = false;
 		isDownloaded = false;
-		buttonAction.setEnabled(true);
+		mButtonAction.setEnabled(true);
 		mProgressBar.setVisibility(4);
 	}
 }
