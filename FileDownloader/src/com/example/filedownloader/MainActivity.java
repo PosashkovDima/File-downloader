@@ -52,8 +52,8 @@ public class MainActivity extends ActionBarActivity {
 	// public void onReceive(Context context, Intent intent) {
 	// Bundle bundle = intent.getExtras();
 	// if (bundle != null) {
-	// mProgressBar.setProgress(bundle
-	// .getInt(DownloadService.TOTAL_DOWNLOADED));
+	// // int i = bundle.getInt(DownloadService.TOTAL_DOWNLOADED);
+	// mProgressBar.setProgress(50);
 	// }
 	// }
 	// };
@@ -71,6 +71,7 @@ public class MainActivity extends ActionBarActivity {
 	protected void onPause() {
 		super.onPause();
 		unregisterReceiver(receiverDownloading);
+		// unregisterReceiver(receiverProgressBAr);
 	}
 
 	@Override

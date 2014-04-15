@@ -50,12 +50,15 @@ public class DownloadService extends IntentService {
 			outputStream = new FileOutputStream(fileOutput.getPath());
 			int next = -1;
 			// long total = 0;
+			// int totalDownloaded = 0;
 			while ((next = inputStream.read()) != -1) {
 				// total += next;
 				outputStream.write(next);
-				// intent.putExtra(TOTAL_DOWNLOADED,
-				// (int) ((total * 100) / lenghtOfFile));
+				// totalDownloaded = (int) ((total * 100) / lenghtOfFile);
+
 			}
+			// intent.putExtra(TOTAL_DOWNLOADED, 50);
+			// sendBroadcast(intent);
 
 			result = Activity.RESULT_OK;
 
